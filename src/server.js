@@ -8,6 +8,7 @@ require('./config/db');
 
 const app = express();
 
+// Security & parsing middleware
 app.use(helmet());
 app.use(cors({
   origin: ['https://ks1-alkebulan-pay.pages.dev', /\.pages\.dev$/],
@@ -16,7 +17,7 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ ROOT ROUTE – Fixes "Not Found" on main URL
+// Root route – prevents "Not Found" and confirms service is live
 app.get('/', (req, res) => {
   res.status(200).json({
     service: 'KS1 SME Onboarding System',
@@ -33,18 +34,19 @@ app.get('/', (req, res) => {
   });
 });
 
-// Routes
+// API routes
 app.use('/api/onboarding', require('./routes/onboarding.routes'));
 
-// Health check
+// Health check for Render
 app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'OK', 
-    service: 'KS1 SME Onboarding', 
-    timestamp: new Date().toISOString() 
+  res.status(200).json({
+    status: 'OK',
+    service: 'KS1 SME Onboarding',
+    timestamp: new Date().toISOString()
   });
 });
 
+// Start server
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`[KS1 ONBOARDING] Running on port ${PORT}`);
