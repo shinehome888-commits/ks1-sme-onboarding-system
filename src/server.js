@@ -16,15 +16,36 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+// ✅ ROOT ROUTE – Fixes "Not Found" on main URL
+app.get('/', (req, res) => {
+  res.status(200).json({
+    service: 'KS1 SME Onboarding System',
+    status: 'OK',
+    message: 'Ready to register African SMEs',
+    endpoints: {
+      createAccount: 'POST /api/onboarding/create-account',
+      verifyPhone: 'POST /api/onboarding/verify-phone',
+      createSMEProfile: 'POST /api/onboarding/create-sme-profile',
+      uploadDocument: 'POST /api/onboarding/upload-document',
+      submitOnboarding: 'POST /api/onboarding/submit-onboarding'
+    },
+    docs: 'Visit https://ks1-alkebulan-pay.pages.dev to begin registration'
+  });
+});
+
 // Routes
 app.use('/api/onboarding', require('./routes/onboarding.routes'));
 
 // Health check
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', service: 'KS1 SME Onboarding', timestamp: new Date().toISOString() });
+  res.status(200).json({ 
+    status: 'OK', 
+    service: 'KS1 SME Onboarding', 
+    timestamp: new Date().toISOString() 
+  });
 });
 
-const PORT = process.env.PORT || 10001;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`[KS1 ONBOARDING] Running on port ${PORT}`);
 });
