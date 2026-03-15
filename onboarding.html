@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register Your Business – KS1 ALKEBULAN PAY</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #050A16;
+      color: white;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 16px;
+      padding: 32px;
+      backdrop-filter: blur(10px);
+    }
+    h1 {
+      text-align: center;
+      color: #D4AF37;
+      font-size: 28px;
+      margin-bottom: 32px;
+      font-weight: 700;
+    }
+    .progress {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .progress::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #333;
+      z-index: 1;
+    }
+    .progress-step {
+      width: 26px;
+      height: 26px;
+      background: #333;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-weight: bold;
+      position: relative;
+      z-index: 2;
+    }
+    .progress-step.active {
+      background: #D4AF37;
+      color: #001A3D;
+    }
+    .step-title {
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .step-desc {
+      color: #aaa;
+      margin-bottom: 24px;
+      font-size: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 10px;
+      border: 1px solid #444;
+      background: #111;
+      color: white;
+      font-size: 16px;
+    }
+    input::placeholder {
+      color: #777;
+    }
+    .btn {
+      background: #D4AF37;
+      color: #001A3D;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 17px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      transition: opacity 0.2s;
+    }
+    .btn:hover {
+      opacity: 0.95;
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .step { display: none; }
+    .step.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>KS1 SME Onboarding</h1>
+
+    <div class="card">
+      <div class="progress">
+        <div class="progress-step active" id="step1-ind">1</div>
+        <div class="progress-step" id="step2-ind">2</div>
+        <div class="progress-step" id="step3-ind">3</div>
+        <div class="progress-step" id="step4-ind">4</div>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="step active" id="step1">
+        <h2 class="step-title">Step 1: Your Contact Information</h2>
+        <p class="step-desc">We use WhatsApp for notifications. Wallet is optional and can be added later.</p>
+        
+        <input type="text" id="fullName" placeholder="Full Name (Business Owner)" required />
+        <input type="tel" id="phone" placeholder="WhatsApp Number (e.g. +233240000000)" required />
+        <input type="text" id="wallet" placeholder="Crypto Wallet Address (Optional – leave blank if unsure)" />
+        <input type="password" id="password" placeholder="Password" required />
+        
+        <button class="btn" onclick="nextStep(1)">Continue</button>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step" id="step2">
+        <h2 class="step-title">Step 2: Business Details</h2>
+        <input type="text" id="businessName" placeholder="Business Name" required />
+        <select id="businessType" required>
+          <option value="">Select Business Type</option>
+          <option value="SME">SME</option>
+          <option value="Entrepreneur">Entrepreneur</option>
+          <option value="Trader">Trader</option>
+          <option value="NGO">NGO</option>
+        </select>
+        <input type="text" id="industry" placeholder="Industry (e.g. Agriculture, Retail)" required />
+        <input type="text" id="country" value="Ghana" readonly />
+        <input type="text" id="city" placeholder="City (e.g. Accra)" required />
+        <input type="text" id="town" placeholder="Town/Area (e.g. Osu)" required />
+        <input type="text" id="address" placeholder="Full Business Address" required />
+        <button class="btn" onclick="prevStep(2)">Back</button>
+        <button class="btn" onclick="nextStep(2)">Continue</button>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step" id="step3">
+        <h2 class="step-title">Step 3: Owner Identity</h2>
+        <input type="date" id="ownerBirthday" required />
+        <input type="date" id="businessBirthday" required />
+        <select id="idType" required>
+          <option value="">Select ID Type</option>
+          <option value="Ghana Card">Ghana Card</option>
+          <option value="Passport">Passport</option>
+          <option value="Driver's License">Driver's License</option>
+        </select>
+        <input type="text" id="idNumber" placeholder="National ID Number" required />
+        <p style="color:#aaa; margin:12px 0; font-size:14px;">Upload ID Document (image only, max 5MB)</p>
+        <input type="file" id="idDocument" accept="image/*" required />
+        <button class="btn" onclick="prevStep(3)">Back</button>
+        <button class="btn" onclick="nextStep(3)">Continue</button>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step" id="step4">
+        <h2 class="step-title">Step 4: Confirm & Submit</h2>
+        <p class="step-desc">Review your information before submitting.</p>
+        <div id="review"></div>
+        <button class="btn" onclick="prevStep(4)">Back</button>
+        <button class="btn" onclick="submitOnboarding()" id="submitBtn">Submit Registration</button>
+        <div id="errorMsg" class="error" style="color:#ff6b6b; margin-top:10px; font-size:14px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://ks1-sme-onboarding-system.onrender.com/api/onboarding';
+    let userId = null;
+    let smeId = null;
+    let uploadedDocUrl = null;
+
+    function showStep(step) {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.getElementById(`step${step}`).classList.add('active');
+      document.querySelectorAll('.progress-step').forEach((el, i) => {
+        el.classList.toggle('active', i < step);
+      });
+    }
+
+    function nextStep(current) {
+      if (current === 1) {
+        createAccount();
+      } else if (current === 2) {
+        createSMEProfile();
+      } else if (current === 3) {
+        uploadDocument();
+      } else {
+        showStep(4);
+        buildReview();
+      }
+    }
+
+    function prevStep(current) {
+      showStep(current - 1);
+    }
+
+    async function createAccount() {
+      const fullName = document.getElementById('fullName').value;
+      const phone = document.getElementById('phone').value;
+      const wallet = document.getElementById('wallet').value.trim() || null;
+      const password = document.getElementById('password').value;
+
+      if (!phone.startsWith('+233')) {
+        alert('Please enter a valid Ghana WhatsApp number starting with +233');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/create-account`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullName, phone, wallet, password })
+        });
+        const result = await res.json();
+        if (result.success) {
+          userId = result.userId;
+          showStep(2);
+        } else {
+          alert('Error: ' + result.message);
+        }
+      } catch (err) {
+        alert('Network error.');
+      }
+    }
+
+    async function createSMEProfile() {
+      const data = {
+        userId,
+        businessName: document.getElementById('businessName').value,
+        businessType: document.getElementById('businessType').value,
+        industry: document.getElementById('industry').value,
+        country: 'Ghana',
+        city: document.getElementById('city').value,
+        address: `${document.getElementById('town').value}, ${document.getElementById('address').value}`
+      };
+      try {
+        const res = await fetch(`${API_BASE}/create-sme-profile`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.success) {
+          smeId = result.smeId;
+          showStep(3);
+        } else {
+          alert('Error: ' + result.message);
+        }
+      } catch (err) {
+        alert('Error creating profile.');
+      }
+    }
+
+    async function uploadDocument() {
+      const file = document.getElementById('idDocument').files[0];
+      if (!file) return alert('Please select an ID document.');
+
+      const formData = new FormData();
+      formData.append('document', file);
+      formData.append('smeId', smeId);
+      formData.append('documentType', 'NATIONAL_ID');
+
+      try {
+        const res = await fetch(`${API_BASE}/upload-document`, {
+          method: 'POST',
+          body: formData
+        });
+        const result = await res.json();
+        if (result.success) {
+          uploadedDocUrl = `/uploads/${file.name}`; // In real app, use result.fileUrl
+          showStep(4);
+          buildReview();
+        } else {
+          alert('Upload failed: ' + result.message);
+        }
+      } catch (err) {
+        alert('Upload error.');
+      }
+    }
+
+    function buildReview() {
+      const contact = document.getElementById('phone').value;
+      const wallet = document.getElementById('wallet').value || 'Not provided (can add later)';
+      document.getElementById('review').innerHTML = `
+        <p><strong>Owner:</strong> ${document.getElementById('fullName').value}</p>
+        <p><strong>WhatsApp:</strong> ${contact}</p>
+        <p><strong>Wallet:</strong> ${wallet}</p>
+        <p><strong>Business:</strong> ${document.getElementById('businessName').value}</p>
+        <p><strong>Type:</strong> ${document.getElementById('businessType').value}</p>
+        <p><strong>Location:</strong> ${document.getElementById('town').value}, ${document.getElementById('city').value}</p>
+      `;
+    }
+
+    // ✅ UPDATED: Now calls KYC after onboarding submit
+    async function submitOnboarding() {
+      const btn = document.getElementById('submitBtn');
+      const errorDiv = document.getElementById('errorMsg');
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      try {
+        // Step 1: Finalize onboarding in backend
+        const smeRes = await fetch(`${API_BASE}/submit-onboarding`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ smeId })
+        });
+        const smeResult = await smeRes.json();
+        if (!smeResult.success) throw new Error(smeResult.message);
+
+        // Step 2: ✅ SEND TO KYC SYSTEM
+        const kycRes = await fetch('https://ks1-verification-kyc-system-2.onrender.com/api/kyc/start-verification', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            smeId: smeId,
+            businessName: document.getElementById('businessName').value,
+            ownerName: document.getElementById('fullName').value,
+            idType: document.getElementById('idType').value,
+            idNumber: document.getElementById('idNumber').value,
+            documentUrls: [uploadedDocUrl || 'https://example.com/fallback.jpg'],
+            city: document.getElementById('city').value
+          })
+        });
+        const kycResult = await kycRes.json();
+
+        if (kycResult.success && kycResult.status === 'KYC_APPROVED') {
+          alert('✅ Your business is verified! You will receive your KS1 Trade ID shortly via WhatsApp.');
+        } else {
+          alert('✅ Registration submitted! Your application is under review. You’ll be notified via WhatsApp.');
+        }
+        window.location.href = 'https://ks1-alkebulan-pay.pages.dev';
+      } catch (err) {
+        errorDiv.textContent = 'Submission failed: ' + (err.message || 'Unknown error');
+        btn.disabled = false;
+        btn.textContent = 'Submit Registration';
+      }
+    }
+  </script>
+</body>
+</html>
