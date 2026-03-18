@@ -16,8 +16,22 @@ const createAccount = async (req, res) => {
     if (!fullName || !phone || !password) {
       return res.status(400).json({ message: 'Full name, phone, and password are required' });
     }
+
+    // Allow re-registration with same phone only if not fully onboarded
     const existing = await User.findOne({ phone });
-    if (existing) return res.status(409).json({ message: 'Phone already registered' });
+    if (existing && existing.onboardingComplete) {
+      return res.status(409).json({ message: 'Phone already registered' });
+    }
+
+    // If exists but incomplete, update instead
+    if (existing) {
+      existing.fullName = fullName;
+      existing.wallet = wallet || existing.wallet;
+      existing.password = password; // or hash it
+      await existing.save();
+      return res.json({ success: true, userId: existing._id.toString() });
+    }
+
     const user = new User({ fullName, phone, wallet, password });
     await user.save();
     res.json({ success: true, userId: user._id.toString() });
