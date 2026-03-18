@@ -25,13 +25,11 @@ function init() {
 
 // Show current step
 function showStep(step) {
-  // Hide all steps
   if (step1) step1.style.display = 'none';
   if (step2) step2.style.display = 'none';
   if (step3) step3.style.display = 'none';
   if (step4) step4.style.display = 'none';
 
-  // Show requested step
   switch (step) {
     case 1:
       if (step1) step1.style.display = 'block';
@@ -203,30 +201,30 @@ async function handleSubmit() {
   }
 }
 
-// ✅ Safe Dev Mode Banner (prevents null.onclick error)
+// ✅ SAFE Dev Mode Banner — NO MORE onclick ERRORS
 function addDevModeBanner() {
-  // Only show in development
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    let banner = document.getElementById('dev-mode-banner');
-    if (!banner) {
-      banner = document.createElement('div');
-      banner.id = 'dev-mode-banner';
-      banner.innerHTML = `
-        <div style="background:#ffeb3b;padding:8px;text-align:center;font-size:14px;color:#000;">
-          🧪 DEV MODE – Not production
-          <span class="close-btn" style="cursor:pointer;float:right;font-weight:bold;">×</span>
-        </div>
-      `;
-      document.body.insertBefore(banner, document.body.firstChild);
-    }
+  if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    return;
+  }
 
-    // ✅ Safe onclick assignment
-    const closeBtn = banner.querySelector('.close-btn');
-    if (closeBtn) {
-      closeBtn.onclick = () => {
-        banner.style.display = 'none';
-      };
-    }
+  let banner = document.getElementById('dev-mode-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'dev-mode-banner';
+    banner.innerHTML = `
+      <div style="background:#ffeb3b;padding:8px;text-align:center;font-size:14px;color:#000;position:fixed;top:0;left:0;right:0;z-index:1000;">
+        🧪 DEV MODE – Not production
+        <button class="close-dev-banner" style="float:right;background:none;border:none;font-weight:bold;font-size:18px;cursor:pointer;">×</button>
+      </div>
+    `;
+    document.body.appendChild(banner);
+  }
+
+  const closeBtn = banner.querySelector('.close-dev-banner');
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      banner.style.display = 'none';
+    };
   }
 }
 
